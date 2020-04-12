@@ -10,32 +10,34 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity {
-    private FusedLocationProviderClient client;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     TextView textView;
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        client = LocationServices.getFusedLocationProviderClient(this);
-        client.getLastLocation()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationProviderClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-
-                        if (location != null) {
+                        if (location != null){
                             textView = findViewById(R.id.Text);
-                            double x = location.getLongitude();
-                            double y = location.getLatitude();
-                            String xValue = String.valueOf(x);
-                            String yValue = String.valueOf(y);
-                            textView.setText(xValue + "" + yValue);
+                            double longitude = location.getLongitude();
+                            double latitude = location.getLatitude();
+                            String Longitude = (df.format(longitude));
+                            String Latitude = (df.format(latitude));
+                            textView.setText(Longitude + "," + Latitude);
                         }
-
                     }
                 });
+
 
 
     }
